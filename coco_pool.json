@@ -1,0 +1,740 @@
+{
+ "fire hydrant|eac4772928": [
+  "1794676837319_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "motorcycle|d14d427dd0": [
+  "1794676891003_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "motorcycle|9cda16c9a5": [
+  "1794676903607_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "fire hydrant|19d0018550": [
+  "1794676909361_4x4",
+  "fire hydrants",
+  450,
+  450
+ ],
+ "motorcycle|82643d0d6d": [
+  "1794676922067_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "bicycle|5964aeda7d": [
+  "1794676927884_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "bicycle|22f6a964f8": [
+  "1794676933652_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "bicycle|51059be0bf": [
+  "1794676939447_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "bus|9be0bcf13b": [
+  "1794676952148_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "motorcycle|7916f945dd": [
+  "1794676982058_3x3",
+  "motorcycles",
+  300,
+  300
+ ],
+ "bicycle|06a7a70b64": [
+  "1794677141539_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "motorcycle|d06d8a708a": [
+  "1794677148087_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "bus|bfc3d51416": [
+  "1794677161160_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "bus|7d99e46de1": [
+  "1794677167303_3x3",
+  "bus",
+  100,
+  100
+ ],
+ "fire hydrant|36a2ebe304": [
+  "1794680228714_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "bus|be3fbae125": [
+  "1794680261745_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "bus|2b6a03b8c6": [
+  "1794680295718_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "bus|7469b46e67": [
+  "1794680343295_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "car|d7b8123a9f": [
+  "1794680376481_3x3",
+  "cars",
+  300,
+  300
+ ],
+ "traffic light|7f9fa204e4": [
+  "1794680390339_3x3",
+  "traffic lights",
+  300,
+  300
+ ],
+ "car|8e7a24f8f7": [
+  "1794680457052_3x3",
+  "cars",
+  300,
+  300
+ ],
+ "bicycle|e1585f94ce": [
+  "1794681997332_3x3",
+  "bicycles",
+  300,
+  300
+ ],
+ "bus|d5cf759a6f": [
+  "1794682029816_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "bus|ab9cb525b5": [
+  "1794682036714_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "traffic light|ce240a5382": [
+  "1794682049954_4x4",
+  "traffic lights",
+  450,
+  450
+ ],
+ "bicycle|784ca10242": [
+  "1794682138619_3x3",
+  "bicycles",
+  300,
+  300
+ ],
+ "fire hydrant|b08113b9b5": [
+  "1794682170657_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "fire hydrant|e2df726a25": [
+  "1794682202638_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "fire hydrant|8e0927e35c": [
+  "1794682234701_4x4",
+  "fire hydrants",
+  450,
+  450
+ ],
+ "bus|8e0927e35c": [
+  "1794682241056_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "bicycle|7a09aca545": [
+  "1794682253928_3x3",
+  "bicycles",
+  300,
+  300
+ ],
+ "bus|bbed8c58a4": [
+  "1794682286126_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "traffic light|bbed8c58a4": [
+  "1794682292667_4x4",
+  "traffic lights",
+  450,
+  450
+ ],
+ "bus|e071910a9f": [
+  "1794682352834_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "bus|f247fde6e5": [
+  "1794682494382_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "fire hydrant|38e1f260ab": [
+  "1794682525716_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "bicycle|ba9c3aa794": [
+  "1794682592479_3x3",
+  "bicycles",
+  300,
+  300
+ ],
+ "fire hydrant|fc170555db": [
+  "1794682624343_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "bus|3f0593ad85": [
+  "1794682656271_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "motorcycle|eabc2f93df": [
+  "1794682688470_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "bus|c6305f60f4": [
+  "1794682694995_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "motorcycle|cd7162c025": [
+  "1794682701456_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "motorcycle|64a176b99f": [
+  "1794682708016_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "motorcycle|49450d5126": [
+  "1794682721205_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "motorcycle|b123ffbdac": [
+  "1794682727752_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "bus|b123ffbdac": [
+  "1794682735224_3x3",
+  "bus",
+  450,
+  450
+ ],
+ "car|28b04c0fdb": [
+  "1794682754315_3x3",
+  "cars",
+  300,
+  300
+ ],
+ "fire hydrant|f4de035a5c": [
+  "1794682785651_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "bicycle|c1c2a80828": [
+  "1794682817732_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "motorcycle|01b74d8b9f": [
+  "1794682834931_3x3",
+  "motorcycles",
+  450,
+  450
+ ],
+ "fire hydrant|ceddecd9c5": [
+  "1794682853947_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "fire hydrant|367ef99914": [
+  "1794682885941_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "motorcycle|d8ab01cdf4": [
+  "1794682918178_3x3",
+  "motorcycles",
+  300,
+  300
+ ],
+ "motorcycle|a9e19a0b01": [
+  "1794682931487_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "car|7edbdda82e": [
+  "1794682948209_3x3",
+  "cars",
+  450,
+  450
+ ],
+ "car|6e58cc08b0": [
+  "1794682967298_3x3",
+  "cars",
+  300,
+  300
+ ],
+ "bicycle|fa2f0706bb": [
+  "1794682999085_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "bicycle|49e544bed7": [
+  "1794683005493_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "motorcycle|d363841506": [
+  "1794683034418_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "traffic light|d363841506": [
+  "1794683040915_4x4",
+  "traffic lights",
+  450,
+  450
+ ],
+ "bicycle|51fc83c2df": [
+  "1794683053917_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "fire hydrant|e9862b3ae6": [
+  "1794683066924_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "fire hydrant|2b9b228181": [
+  "1794683166975_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "fire hydrant|4f49204761": [
+  "1794683276870_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "bus|7cdac99251": [
+  "1794683308674_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "bicycle|fff271f246": [
+  "1794683348184_3x3",
+  "bicycles",
+  300,
+  300
+ ],
+ "car|88fc50d099": [
+  "1794683379739_3x3",
+  "cars",
+  300,
+  300
+ ],
+ "traffic light|750bfbd04f": [
+  "1794683411146_4x4",
+  "traffic lights",
+  450,
+  450
+ ],
+ "motorcycle|92627b6ec8": [
+  "1794683417676_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "bus|565f632723": [
+  "1794683424141_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "motorcycle|565f632723": [
+  "1794683430699_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "motorcycle|3ffacdf10a": [
+  "1794683444107_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "traffic light|3ffacdf10a": [
+  "1794683464659_4x4",
+  "traffic lights",
+  450,
+  450
+ ],
+ "motorcycle|44a77c3158": [
+  "1794683477937_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "fire hydrant|44a77c3158": [
+  "1794683491875_3x3",
+  "a fire hydrant",
+  450,
+  450
+ ],
+ "bicycle|91617c4d74": [
+  "1794683545205_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "fire hydrant|91617c4d74": [
+  "1794683564054_3x3",
+  "a fire hydrant",
+  450,
+  450
+ ],
+ "bicycle|81fde34f26": [
+  "1794683583774_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "motorcycle|81fde34f26": [
+  "1794683610096_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "motorcycle|0c27e67114": [
+  "1794683644673_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "car|7b330488e2": [
+  "1794683663875_3x3",
+  "cars",
+  300,
+  300
+ ],
+ "traffic light|adbcca4552": [
+  "1794683695445_4x4",
+  "traffic lights",
+  450,
+  450
+ ],
+ "bicycle|7d9a4e5e0f": [
+  "1794683701985_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "motorcycle|3b72ae0509": [
+  "1794683709552_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "bus|3b72ae0509": [
+  "1794683716018_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "bicycle|1d2e42702b": [
+  "1794683763614_3x3",
+  "bicycles",
+  300,
+  300
+ ],
+ "bicycle|86c7379443": [
+  "1794683776895_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "bus|86c7379443": [
+  "1794683783621_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "bus|88447ccc07": [
+  "1794683790138_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "car|e600e4931a": [
+  "1794683844883_3x3",
+  "cars",
+  300,
+  300
+ ],
+ "bus|b146923e13": [
+  "1794683876508_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "fire hydrant|4dffdc9ba6": [
+  "1794683908666_4x4",
+  "fire hydrants",
+  450,
+  450
+ ],
+ "motorcycle|4dffdc9ba6": [
+  "1794683915236_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "bicycle|4dffdc9ba6": [
+  "1794683922562_3x3",
+  "bicycles",
+  450,
+  450
+ ],
+ "bus|f75d6d9963": [
+  "1794683941729_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "bicycle|8820c8810e": [
+  "1794683948277_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "fire hydrant|8820c8810e": [
+  "1794683955641_3x3",
+  "a fire hydrant",
+  450,
+  450
+ ],
+ "bicycle|96809ad97d": [
+  "1794683974760_3x3",
+  "bicycles",
+  300,
+  300
+ ],
+ "traffic light|f126a45f2a": [
+  "1794684009037_4x4",
+  "traffic lights",
+  450,
+  450
+ ],
+ "motorcycle|647e40f4d2": [
+  "1794684015940_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "bus|647e40f4d2": [
+  "1794684022720_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "fire hydrant|647e40f4d2": [
+  "1794684029293_4x4",
+  "fire hydrants",
+  450,
+  450
+ ],
+ "car|18ea9542c3": [
+  "1794684042850_4x4",
+  "taxis",
+  450,
+  450
+ ],
+ "motorcycle|824e43b376": [
+  "1794684049413_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "fire hydrant|afb02f53df": [
+  "1794684063362_4x4",
+  "fire hydrants",
+  450,
+  450
+ ],
+ "bus|ded0fd6eb8": [
+  "1794684076648_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "motorcycle|ded0fd6eb8": [
+  "1794684083333_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "bus|283e2e690c": [
+  "1794684401676_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "bicycle|2e7bdef172": [
+  "1794684444069_4x4",
+  "bicycles",
+  450,
+  450
+ ],
+ "bus|2e7bdef172": [
+  "1794684450717_4x4",
+  "buses",
+  450,
+  450
+ ],
+ "motorcycle|2e7bdef172": [
+  "1794684457482_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "motorcycle|ed2e902cfd": [
+  "1794684472422_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "traffic light|ed2e902cfd": [
+  "1794684485754_4x4",
+  "traffic lights",
+  450,
+  450
+ ],
+ "bicycle|468441028d": [
+  "1794684506811_3x3",
+  "bicycles",
+  300,
+  300
+ ],
+ "fire hydrant|d0cfbcab14": [
+  "1794684539868_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "car|55e9ed46db": [
+  "1794684574408_3x3",
+  "cars",
+  300,
+  300
+ ],
+ "fire hydrant|239ebd6355": [
+  "1794684607314_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "bus|9fb7f7c78b": [
+  "1794684642306_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "bus|313256db84": [
+  "1794684677579_3x3",
+  "bus",
+  300,
+  300
+ ],
+ "fire hydrant|1e36b685a7": [
+  "1794684709924_3x3",
+  "a fire hydrant",
+  300,
+  300
+ ],
+ "motorcycle|743518d713": [
+  "1794684742213_4x4",
+  "motorcycles",
+  450,
+  450
+ ],
+ "traffic light|743518d713": [
+  "1794684748938_4x4",
+  "traffic lights",
+  450,
+  450
+ ],
+ "car|2b18319859": [
+  "1794684775657_3x3",
+  "cars",
+  300,
+  300
+ ]
+}

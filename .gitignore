@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.pyc
+*.log
+
+# Captured challenge data (regenerable, and can contain site content)
+capture/
+rc_dump/
+bl_*/
+big_sheets/
+sheets/
+*.jpg
+*.png
+
+# Model weights
+*.pt
+*.npz
+*.npy
+*.pth

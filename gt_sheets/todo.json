@@ -1,0 +1,50 @@
+[
+ {
+  "base": "bl_cls100\\1794817314095_motorcycle",
+  "label": "motorcycle",
+  "picks": [
+   6,
+   7
+  ]
+ },
+ {
+  "base": "bl_cls100\\1794817313043_motorcycle",
+  "label": "motorcycle",
+  "picks": [
+   5,
+   9
+  ]
+ },
+ {
+  "base": "bl_cls100\\1794817294624_Fire_hydrant",
+  "label": "Fire hydrant",
+  "picks": [
+   3,
+   7
+  ]
+ },
+ {
+  "base": "bl_cls100\\1794817292023_Pedestrian_crossing",
+  "label": "Pedestrian crossing",
+  "picks": [
+   0,
+   8
+  ]
+ },
+ {
+  "base": "bl_cls100\\1794817290051_Bus",
+  "label": "Bus",
+  "picks": [
+   4,
+   6
+  ]
+ },
+ {
+  "base": "bl_cls100\\1794817287704_bus",
+  "label": "bus",
+  "picks": [
+   3,
+   7
+  ]
+ }
+]

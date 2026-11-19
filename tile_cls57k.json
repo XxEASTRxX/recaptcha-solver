@@ -1,0 +1,19 @@
+{
+ "classes": [
+  "Bicycle",
+  "Bridge",
+  "Bus",
+  "Car",
+  "Chimney",
+  "Crosswalk",
+  "Hydrant",
+  "Motorcycle",
+  "Mountain",
+  "Other",
+  "Palm",
+  "Stair",
+  "Tractor",
+  "Traffic Light"
+ ],
+ "best_val_acc": 0.9111261872455902
+}
