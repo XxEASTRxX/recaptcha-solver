@@ -761,3 +761,10 @@ The prompt memory recorded winning descriptions but the synthesizer never saw th
 v31 was replaced by a generic v44 (2 ok / 4 fail) and the sports window fell to 29%. `wins_context`
 now feeds the wins into synthesis; the raw synthesizer names the baseball cap. Live gate running.
 Cross-note only; code in the hCaptcha repo.
+
+## 2026-11-21 - hCaptcha learning-loop repair confirmed: sports 57/91 = 63%
+
+With the loop-selected v24 prompt restored and the retirement rule fixed (no 4-fail churn), the gate
+reads sports 57/91 = 63% and total 63/100, versus 29-38% for the generic churned versions (v44-49)
+and 11% for the universal prompt. The loop's own win record selected the prompt in use. Cross-note
+only; code and memory in the hCaptcha repo.
