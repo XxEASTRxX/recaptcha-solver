@@ -20,3 +20,4 @@ sheets/
 capture_*/
 gt_exact/
 probe*_vlm.json
+homeserver_training/
