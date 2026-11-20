@@ -831,3 +831,12 @@ SAM's masks UNDER-COVER the partial tiles the exact rule requires (motorcycle ex
 sam_best [5]; [5,6,9,10] -> [6,10]). SAM is class-agnostic and tile-exactness needs the partials, so
 it cannot label this task. The GPU routes are now all measured: fine-tune 8/31 = 26%, SAM 1/10,
 detector+SAM 1/10, vs the VLM's 43% - the VLM remains the 4x4 path.
+
+## 2026-11-21 - doscaptcha classified; partial-tile probe ready
+
+The acquire HTTP 400s are doscaptcha trust verdicts (no image payload by design); they now return
+`doscaptcha (trust verdict, no payload)` so they cannot count as infrastructure-class failures
+(c077f33). The multicaptcha's whole-grid prompt never stated the exact GT's partial-tile rule;
+`grid_partial_probe.py` tests the explicit "ANY part is visible" wording against the 101 exact 4x4
+grids (pending - the brain was busy with the hCaptcha gate). The multicaptcha remains 43% (the VLM);
+the GPU fine-tune (8/31), SAM auto (1/10) and detector+SAM (1/10) are all below it.
