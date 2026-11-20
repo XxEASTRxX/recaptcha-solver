@@ -840,3 +840,11 @@ The acquire HTTP 400s are doscaptcha trust verdicts (no image payload by design)
 `grid_partial_probe.py` tests the explicit "ANY part is visible" wording against the 101 exact 4x4
 grids (pending - the brain was busy with the hCaptcha gate). The multicaptcha remains 43% (the VLM);
 the GPU fine-tune (8/31), SAM auto (1/10) and detector+SAM (1/10) are all below it.
+
+## 2026-11-21 - partial-tile whole-grid probe REFUTED: 0/101 exact
+
+`grid_partial_probe.py` on the 101 exact 4x4 grids with the explicit "a tile counts if ANY part is
+visible, even a small fragment" wording: **exact 0/101 = 0%**; tile tp=161 fp=237 fn=308 (precision
+40%, recall 34%). The VLM over-selects with the partial rule (e.g. the bus grid got all 16 tiles).
+The per-tile path (54.5% per-tile, the 43% grid-level) remains the best multicaptcha method; the
+whole-grid prompt is NOT the route. Do not retry the whole-grid partial-tile wording.
