@@ -686,3 +686,11 @@ that explicitly counts wheels/bumpers/mirrors/the object's own shadow returns th
 shipped prompt on all six hand-checked grids (1/6 exact), so the VLM's per-tile judgement is stable
 but wrong on partials - wording is not the lever. A short full fine-tune (8 epochs) on the 52 exact
 grids is running; it is the remaining local route to a usable 4x4 model.
+
+## 2026-11-20 - 4x4 full fine-tune REFUTED: 2/16 holdout (frozen linear 4/15)
+
+An 8-epoch full fine-tune on the 52 exact grids (36 train / 16 holdout) reached train loss 0.015 and
+**2/16 exact** holdout (1/16 at 0.5-0.6) - worse than the frozen linear head (4/15). With 52 grids the
+backbone overfits. The frozen-head checkpoint was restored (`train_head_only.py 4`). Conclusion: a 4x4
+model needs substantially more exact labels (or a stronger backbone), not more fitting. The live 4x4
+path stays on the VLM (43%), and HC_MC_NET remains 3x3-only.
