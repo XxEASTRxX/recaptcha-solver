@@ -677,3 +677,12 @@ a subset of the net's), union 70. Net-right/VLM-wrong 5, VLM-right/net-wrong 8, 
 gain, not a route to 90% live (live VLM 85%, net 86%). The remaining errors are 7 high-confidence
 false tiles the VLM rejects; a better verifier is needed. Dynamic 90% remains unmet; multicaptcha
 33-43% remains blocked on a GPU-trained 4x4 model (52 exact labels now exist).
+
+## 2026-11-20 - 4x4: neighbour context and "partials count" prompt REFUTED
+
+Neighbour-context features (own 512 + mean of 8 neighbours, linear and MLP heads, same 70/30 split):
+**3/15 exact** (own-features linear was 4/15), so context adds noise, not signal. A prompt variant
+that explicitly counts wheels/bumpers/mirrors/the object's own shadow returns the SAME picks as the
+shipped prompt on all six hand-checked grids (1/6 exact), so the VLM's per-tile judgement is stable
+but wrong on partials - wording is not the lever. A short full fine-tune (8 epochs) on the 52 exact
+grids is running; it is the remaining local route to a usable 4x4 model.

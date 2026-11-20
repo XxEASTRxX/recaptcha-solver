@@ -134,7 +134,7 @@ def main():
                 exact += 1
         print(f"holdout thr={thr}: exact {exact}/{len(test_g)}")
     # save a model trained on all grids
-    net = train(grids, classes, epochs=18)
+    net = train(grids, classes, epochs=8)
     torch.save({"state": net.state_dict(), "classes": classes}, f"tile_cls_{ROWS}x{ROWS}.pt")
     print(f"saved tile_cls_{ROWS}x{ROWS}.pt")
 
