@@ -62,7 +62,7 @@ def build_model(n_classes, ckpt="tile_cls57k.pt"):
     return net
 
 
-def train(grids, classes, epochs=18, lr=3e-4):
+def train(grids, classes, epochs=8, lr=3e-4):
     net = build_model(len(classes))
     opt = torch.optim.Adam([
         {"params": [p for n, p in net.named_parameters() if not n.startswith("fc.")], "lr": lr / 5},
