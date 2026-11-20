@@ -820,3 +820,14 @@ exact **130/163 at thr 0.4, 131/163 at 0.5, 137/163 = 84% at 0.6**. The current 
 head had read 71/80 = 89% on its holdout; neither ships. Conclusion from the GPU runs: the limit is
 the label volume/model, not the compute. The checkpoints stay on the homeserver
 (`/home/eas2007arda/captcharesearch/homeserver_training/`).
+
+## 2026-11-21 - SAM offline labeling REFUTED (automatic 1/10, detector+SAM 1/10)
+
+SAM vit_b on the homeserver GPU (class-agnostic automatic masks, points_per_side=8):
+largest-mask heuristics **1/10** exact on the 101-grid set (the largest non-full mask is usually the
+sky/ground/background). Class-aware hybrid (COCO detector box -> SAM box prompt -> mask -> tiles):
+**1/10** exact; the detector misses bicycle/hydrant entirely (no detection at score >= 0.30) and
+SAM's masks UNDER-COVER the partial tiles the exact rule requires (motorcycle exp [5,6,7] ->
+sam_best [5]; [5,6,9,10] -> [6,10]). SAM is class-agnostic and tile-exactness needs the partials, so
+it cannot label this task. The GPU routes are now all measured: fine-tune 8/31 = 26%, SAM 1/10,
+detector+SAM 1/10, vs the VLM's 43% - the VLM remains the 4x4 path.
