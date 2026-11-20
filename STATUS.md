@@ -811,3 +811,12 @@ The per-tile VLM is 43% live, so the 4x4 model still loses; the limit is the 101
 not the compute. No 4x4 net ships (`HC_MC_NET_4X4` stays off). The scripts were also made
 GPU-aware and path-normalized (the Windows manifest backslashes broke `cv2.imread` on Linux).
 The 3x3 fine-tune is running.
+
+## 2026-11-21 - homeserver 3x3 fine-tune: 137/163 = 84% holdout, no lift
+
+`train_4x4_tiles.py 3` on the GPU: 382 train / 163 holdout, train loss 0.000 (overfit), holdout
+exact **130/163 at thr 0.4, 131/163 at 0.5, 137/163 = 84% at 0.6**. The current per-class routing is
+86% live (VLM bus/pedestrian + 57k bicycle/hydrant), so the 3x3 net does not beat it. The frozen
+head had read 71/80 = 89% on its holdout; neither ships. Conclusion from the GPU runs: the limit is
+the label volume/model, not the compute. The checkpoints stay on the homeserver
+(`/home/eas2007arda/captcharesearch/homeserver_training/`).
