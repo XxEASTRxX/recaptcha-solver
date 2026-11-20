@@ -721,3 +721,10 @@ the 86 grids (61 train / 25 holdout) reads **4/25 = 16% exact** (4/25 at thr 0.4
 better than the 52-grid run (4/15). The limit is the FEATURES, not the data volume: the 4x4 task
 needs a segmentation-grade model (or a per-tile verifier that understands partials), which the local
 backbone cannot provide. The live 4x4 path stays on the VLM (43%); no 4x4 net ships.
+
+## 2026-11-20 - harvest stopped at 101 4x4 / 545 3x3 exact grids
+
+The 20-gate loop was stopped after nine gates (10-18) once the 4x4 line was shown feature-limited.
+Final md5-deduped exact GT: **101 4x4 grids** (32 motorcycle, 20 bicycle, 17 bus, 16 traffic light,
+10 hydrant, 6 car) and **545 3x3 grids**. The extra data does not change the frozen-probe conclusion
+(4/25 before the last gates); it is available for a future segmentation-grade model.
