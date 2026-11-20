@@ -784,3 +784,9 @@ Five live multicaptcha rounds submitted the per-tile VLM picks; every submission
 image (md5 match) in all five. The session re-serves the same grid after a wrong answer; there is no
 pending next grid. A null is a wrong answer, exact matching stands, and the 33-43% rate is genuine
 recognition accuracy. The remaining multicaptcha gap is the 4x4 model (feature-limited).
+
+## 2026-11-21 - dynamic is also single-grid (6/6 tokens on first submission)
+
+A payload-refetch probe on six live `dynamic` rounds returned tokens on the first submission every
+time (6/6, no nulls). Dynamic, like multicaptcha, is one grid per challenge; the 86% live rate is
+recognition accuracy, not a continuation limit. Both protocol hypotheses are now closed.
