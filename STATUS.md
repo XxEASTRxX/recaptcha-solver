@@ -655,3 +655,25 @@ the head on the frozen backbone and saves `tile_cls_3x3.pt` / `tile_cls_4x4.pt`;
 `browserless.picks_by_tile_net` + `HC_MC_NET=1` use them (net first, existing path as fallback).
 The 3x3 path is the live dynamic candidate; the 4x4 path is not shipped (43% live is already better
 than anything measured from the 4x4 net).
+
+## 2026-11-20 - 3x3 exact-GT net live gate (HC_MC_NET=1) queued
+
+The 3x3 net reached 71/80 = 89% exact on held-out harvested grids. Live gate (60 rounds) runs with
+HC_MC_NET=1; the net applies to 3x3 (dynamic) only by default (HC_MC_NET_4X4=1 would enable the weak
+4x4 net). Dynamic baseline 39/46 = 85%, multicaptcha 6/14 = 43%.
+
+## 2026-11-20 - 3x3 net LIVE: dynamic 36/42 = 86% (baseline 85%), no lift
+
+`HC_MC_NET=1`, 60 rounds: total 42/60 = 70%, dynamic **36/42 = 86%**, multicaptcha 6/18 = 33% (4x4
+path unchanged; window variance). The 89% held-out rate did not translate to a live lift, but the net
+is deterministic and fast (~1.1-1.4 s/round). No mc-net errors. Next: net vs VLM complementarity on
+the 80 held-out exact grids; if each is right where the other is wrong, an ensemble can clear 90%.
+
+## 2026-11-20 - net/VLM complementarity: VLM 73/80, net 70/80, fusion +1
+
+On the 80 held-out exact 3x3 grids: VLM 73/80 = 91%, net 70/80, intersection 73 (the VLM's picks are
+a subset of the net's), union 70. Net-right/VLM-wrong 5, VLM-right/net-wrong 8, both wrong 2.
+"VLM plus net tiles at prob >= 0.98" reaches 74/80 with precision 0.97 and recall 1.00 - a 1-grid
+gain, not a route to 90% live (live VLM 85%, net 86%). The remaining errors are 7 high-confidence
+false tiles the VLM rejects; a better verifier is needed. Dynamic 90% remains unmet; multicaptcha
+33-43% remains blocked on a GPU-trained 4x4 model (52 exact labels now exist).
