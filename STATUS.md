@@ -754,3 +754,10 @@ it, and 31% of "drag the X so it sits inside both shapes" rounds fell to a grid-
 generic re-ask stating the valid y range (`maxy = 1000*h/H`) fixed it: live gate drag-X **16/17 =
 94%** (baseline 36-39%), traces `vlm_first` 16 / `grid_cell` 1. Cross-note only; solver in the
 hCaptcha repo.
+
+## 2026-11-21 - hCaptcha learning loop cross-note: wins were stored but not synthesized
+
+The prompt memory recorded winning descriptions but the synthesizer never saw them; the 66%-pass
+v31 was replaced by a generic v44 (2 ok / 4 fail) and the sports window fell to 29%. `wins_context`
+now feeds the wins into synthesis; the raw synthesizer names the baseball cap. Live gate running.
+Cross-note only; code in the hCaptcha repo.
