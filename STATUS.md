@@ -623,3 +623,35 @@ motorcycle's false edge tiles (0.16-0.23).
 dynamic grids**. 13 grids cannot train a 4x4 tile classifier; the 3x3 set can train a 3x3 model, but
 the earlier in-domain transfer measured 34% live, so transfer to 4x4 is not assumed. Multicaptcha
 stays at 6/14 = 43%, blocked on exact labels.
+
+## 2026-11-20 - 3x3->4x4 transfer and GrabCut refinement REFUTED; harvesting more 4x4 labels
+
+`probe_transfer.py`: 57k resnet18 features + per-class logistic probes trained on the 97 exact 3x3
+grids (873 tiles, 294 positives), evaluated on the 13 exact 4x4 grids — **1/13 exact** at thr 0.3/0.4,
+0/13 at 0.5/0.6. 3x3 tile appearance does not transfer to 4x4 splits.
+
+GrabCut refinement of each COCO box (foreground coverage per tile, thr 0.05-0.20) — **1/6 exact** on
+the hand grids; recovers some partials but drops others, and the car grid yields nothing.
+
+The only remaining path is a 4x4-specific model, so five 60-round gates are harvesting passing
+multicaptcha rounds (exact GT). Each new passing 4x4 grid is added to `gt_exact/` by `gt_harvest.py`.
+
+## 2026-11-20 - exact-GT 4x4 classifier: 52 grids; frozen probe and hybrid REFUTED
+
+Five 60-round harvest gates (39+39+37+43+47 = 205/300 = 68%) grew the exact GT to **52 4x4 grids**
+and **263 3x3 grids** (a passing round is exact GT). `probe_4x4_probe.py` (frozen 57k features +
+per-class logistic, 37 train / 15 holdout) reaches 4/15 exact. Tile-level on the same holdout:
+VLM precision 0.98 / recall 0.68; net 0.86 / 0.79; union 0.87 / 0.92 but exact 6-7/15 at every net
+threshold 0.5-0.95 (VLM-only 7/15). The VLM under-selects; the net adds recall but each added tile
+must be exact, so the union cannot beat VLM-only. A full fine-tune (train_4x4_tiles.py) was stopped:
+CPU cost is high and the frozen probe leaves little headroom. Multicaptcha remains 43%, blocked on
+a stronger model or GPU-trained 4x4 classifier; the exact labels are now available for that.
+
+## 2026-11-20 - exact-GT 3x3 tile net: 71/80 = 89% held-out; 4x4 still weak
+
+The five-gate harvest grew the exact GT to 52 4x4 / 263 3x3 grids. Frozen 57k features + per-class
+logistic heads, grid-level holdout: **3x3 71/80 = 89% exact**, 4x4 4/15. `train_head_only.py` fits
+the head on the frozen backbone and saves `tile_cls_3x3.pt` / `tile_cls_4x4.pt`;
+`browserless.picks_by_tile_net` + `HC_MC_NET=1` use them (net first, existing path as fallback).
+The 3x3 path is the live dynamic candidate; the 4x4 path is not shipped (43% live is already better
+than anything measured from the 4x4 net).

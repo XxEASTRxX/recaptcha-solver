@@ -372,6 +372,67 @@ def picks_by_classifier(png: bytes, rows: int, cols: int, label: str) -> list[in
 
 
 
+# ---- tile net trained on EXACT ground truth (a passing round's picks ARE the true set) ---------
+MC_NORM = {"Bike": "bicycle", "bicycle": "bicycle", "Bus": "bus", "bus": "bus",
+           "Fire hydrant": "fire hydrant", "fire hydrant": "fire hydrant",
+           "Pedestrian crossing": "pedestrian crossing", "car": "car", "Car": "car",
+           "motorcycle": "motorcycle", "traffic light": "traffic light"}
+_TILE_NETS: dict = {}
+
+
+def _tile_net(rows: int):
+    import torch
+    import torchvision.transforms as T
+    from torchvision.models import resnet18
+    if rows in _TILE_NETS:
+        return _TILE_NETS[rows]
+    here = os.path.dirname(os.path.abspath(__file__))
+    ck = torch.load(os.path.join(here, f"tile_cls_{rows}x{rows}.pt"),
+                    map_location="cpu", weights_only=False)
+    net = resnet18(weights=None)
+    net.fc = torch.nn.Linear(net.fc.in_features, len(ck["classes"]))
+    net.load_state_dict(ck["state"])
+    net.eval()
+    tf = T.Compose([T.ToTensor(), T.Resize((160, 160)),
+                    T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
+    _TILE_NETS[rows] = (net, ck["classes"], tf)
+    return _TILE_NETS[rows]
+
+
+def picks_by_tile_net(png: bytes, rows: int, cols: int, label: str) -> list[int]:
+    """Select tiles whose head (trained on exact GT) scores the target >= HC_MC_NET_THR.
+
+    Exact acceptance was proven with HC_MC_ALL (all-16 failed 0/18), so a passing round is a clean
+    label source. Trained per class on the harvested 4x4/3x3 grids; this is the serving candidate
+    for multicaptcha, not the 57k public model (which is exact on 2/6 hand grids and blind to
+    motorcycles).
+    """
+    import torch
+    import cv2 as _cv2
+    import numpy as _np
+    target = MC_NORM.get(label)
+    if target is None:
+        return []
+    net, classes, tf = _tile_net(rows)
+    if target not in classes:
+        return []
+    ci = classes.index(target)
+    arr = _cv2.imdecode(_np.frombuffer(png, _np.uint8), _cv2.IMREAD_COLOR)
+    if arr is None:
+        return []
+    h, w = arr.shape[:2]
+    th, tw = h // rows, w // cols
+    tiles = []
+    for i in range(rows * cols):
+        r, c = divmod(i, cols)
+        tiles.append(tf(_cv2.cvtColor(arr[r * th:(r + 1) * th, c * tw:(c + 1) * tw],
+                                       _cv2.COLOR_BGR2RGB)))
+    thr = float(os.environ.get("HC_MC_NET_THR", "0.5"))
+    with torch.no_grad():
+        p = torch.sigmoid(net(torch.stack(tiles))[:, ci]).numpy()
+    return [i for i in range(rows * cols) if float(p[i]) >= thr]
+
+
 def picks_cascade(png: bytes, rows: int, cols: int, label: str,
                   conf_thr: float = 0.80) -> tuple[list[int], int]:
     """Fast classifier first; VLM only for the tiles the classifier is unsure about.
@@ -475,7 +536,16 @@ def solve_one(sess, net, cats, sitekey: str, v: str, template: bytes):
     # 17 hand-labelled grids, vs a per-tile yes/no loop that missed a true tile on the first grid.
     # Off by default so the 53% baseline stays measurable; HC_GRID_VLM=1 turns it on.
     picks = []
-    if not _no_vlm and os.environ.get("HC_GRID_VLM") == "1" and label:
+    # EXACT-GT tile net first when enabled. It is trained only on passing-round labels (exact by
+    # the all-16 proof), so it carries no public-dataset bias. Falls through to the existing VLM
+    # path when the checkpoint is missing or the label is unknown. HC_MC_NET=0 leaves it off.
+    if os.environ.get("HC_MC_NET") == "1" and label:
+        try:
+            picks = picks_by_tile_net(img, rows, cols, label)
+        except Exception as exc:  # noqa: BLE001 - a missing checkpoint must not fail the round
+            print(f"[mc-net] {type(exc).__name__}: {str(exc)[:80]}", flush=True)
+            picks = []
+    if not picks and not _no_vlm and os.environ.get("HC_GRID_VLM") == "1" and label:
         try:
             # Pass the FULL instruction, not the bare KG label: the measured run over-selected
             # badly on bare labels (8 of 9 tiles for "car"), which is the signature of the model
