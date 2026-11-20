@@ -510,6 +510,10 @@ def solve_one(sess, net, cats, sitekey: str, v: str, template: bytes):
     if img is not None:
         meta["img_bytes"] = img
     if img is None:
+        if meta.get("type") == "doscaptcha":
+            # A trust verdict on the anchor, not a protocol failure - keep it out of the
+            # infrastructure-error class in gate metrics.
+            return False, "doscaptcha (trust verdict, no payload)", meta
         return False, f"acquire: {meta.get('error')}", meta
     label = meta.get("label")
     # 450x450 payloads are class `rc-image-tile-44`: a 4x4 GRID (16 tiles), not a point-click.
