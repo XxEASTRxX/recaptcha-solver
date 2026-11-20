@@ -9,6 +9,7 @@ Output: gt_exact/manifest.json  [{image, type, label, rows, cols, picks, source}
 The six hand-checked grids are included with source="hand" and their visually verified sets.
 """
 import glob
+import hashlib
 import json
 import os
 import shutil
@@ -44,13 +45,19 @@ def main():
         picks = d.get("picks") or []
         rows = 4 if d.get("type") == "multicaptcha" else 3
         key = os.path.basename(img)
-        if key in seen:
+        # md5 dedup: the site re-serves the same photo across rounds, and a duplicate would leak
+        # the same grid into both the train and holdout splits. Exact GT makes the duplicate
+        # harmless in content but harmful in evaluation, so keep one copy per distinct photo.
+        digest = hashlib.md5(open(img, "rb").read()).hexdigest()
+        if key in seen or digest in seen:
             continue
         seen.add(key)
+        seen.add(digest)
         dst = os.path.join(OUT, key)
         shutil.copyfile(img, dst)
         manifest.append({"image": dst, "type": d.get("type"), "label": d.get("label"),
-                         "rows": rows, "cols": rows, "picks": picks, "source": "pass"})
+                         "rows": rows, "cols": rows, "picks": picks, "source": "pass",
+                         "md5": digest})
     for name, (label, rows, cols, picks) in HAND.items():
         src = glob.glob(f"capture*/**/{name}", recursive=True)
         if not src:
