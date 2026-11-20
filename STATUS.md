@@ -736,3 +736,12 @@ singular-pattern rounds (family=difficon) with webm + click are available, and t
 strong on its own distribution. On the current static triangle-glyph scenes the pulse detector
 returns <2 clusters (declines), and patch4 on edge-density crops is 1/2 with zero or real change
 channels. No cross-repo action.
+
+## 2026-11-20 - memory A/B (hCaptcha cross-note): sports ON 3/5 vs OFF 3/9
+
+The HC_NO_MEMORY A/B (memory-ON arm 49/100; OFF arm partial, 44 rounds before the job cap) reads
+sports **ON 3/5 = 60%** vs **OFF 3/9 = 33%** (p~0.28, underpowered), drag-X 39% vs 36% (no effect),
+drag-TWO 100% in both. Combined with the pooled version history (v8 0/5 -> v31 87/131 = 66%) and the
+post-fix split (memory 97/156 = 62% vs universal 1/7), the learning loop's benefit is real in the
+pooled data but NOT demonstrated under control. Cross-note only; the corpus and solver live in the
+hCaptcha repo.
