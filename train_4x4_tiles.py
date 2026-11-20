@@ -24,6 +24,7 @@ import torchvision.transforms as T
 from torchvision.models import resnet18
 
 ROWS = int(sys.argv[1]) if len(sys.argv) > 1 else 4
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 NORM = {"Bike": "bicycle", "bicycle": "bicycle", "Bus": "bus", "bus": "bus",
         "Fire hydrant": "fire hydrant", "fire hydrant": "fire hydrant",
@@ -63,7 +64,7 @@ def build_model(n_classes, ckpt="tile_cls57k.pt"):
 
 
 def train(grids, classes, epochs=8, lr=3e-4):
-    net = build_model(len(classes))
+    net = build_model(len(classes)).to(DEVICE)
     opt = torch.optim.Adam([
         {"params": [p for n, p in net.named_parameters() if not n.startswith("fc.")], "lr": lr / 5},
         {"params": net.fc.parameters(), "lr": lr},
@@ -78,8 +79,8 @@ def train(grids, classes, epochs=8, lr=3e-4):
             if cls not in classes:
                 continue
             ci = classes.index(cls)
-            x = torch.stack(tiles_of(m["image"]))
-            y = torch.zeros(ROWS * ROWS, len(classes))
+            x = torch.stack(tiles_of(m["image"])).to(DEVICE)
+            y = torch.zeros(ROWS * ROWS, len(classes)).to(DEVICE)
             picks = [i for i in m["picks"] if 0 <= i < ROWS * ROWS]
             y[picks, ci] = 1.0
             logits = net(x)
@@ -100,12 +101,14 @@ def predict(net, m, classes, thr=0.5):
     if cls not in classes:
         return None
     ci = classes.index(cls)
-    p = torch.sigmoid(net(torch.stack(tiles_of(m["image"])))[:, ci]).numpy()
+    p = torch.sigmoid(net(torch.stack(tiles_of(m["image"])).to(DEVICE))[:, ci]).cpu().numpy()
     return set(np.where(p >= thr)[0].tolist())
 
 
 def main():
     manifest = json.load(open("gt_exact/manifest.json", encoding="utf-8"))
+    for _m in manifest:
+        _m["image"] = str(_m["image"]).replace("\\", "/")
     grids = [m for m in manifest if m["rows"] == ROWS]
     print(f"4x4 grids: {len(grids)}")
     if len(grids) < 8:

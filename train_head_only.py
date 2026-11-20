@@ -23,18 +23,21 @@ sys.modules["httpx"] = h
 import browserless as B  # noqa: E402
 
 ROWS = int(sys.argv[1]) if len(sys.argv) > 1 else 3
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def main():
     manifest = json.load(open("gt_exact/manifest.json", encoding="utf-8"))
+    for _m in manifest:
+        _m["image"] = str(_m["image"]).replace("\\", "/")
     grids = [m for m in manifest if m["rows"] == ROWS]
     classes = sorted({B.MC_NORM.get(m["label"], m["label"]) for m in grids})
     print(f"{ROWS}x{ROWS} grids {len(grids)}, classes {classes}")
     net, _old_classes, tf = B._classifier()
-    backbone = torch.nn.Sequential(*list(net.children())[:-1]).eval()
+    backbone = torch.nn.Sequential(*list(net.children())[:-1]).to(DEVICE).eval()
     for p in backbone.parameters():
         p.requires_grad_(False)
-    head = nn.Linear(512, len(classes))
+    head = nn.Linear(512, len(classes)).to(DEVICE)
     opt = torch.optim.Adam(head.parameters(), lr=1e-3)
     lossf = nn.BCEWithLogitsLoss()
 
@@ -46,7 +49,7 @@ def main():
             th, tw = hh // ROWS, ww // ROWS
             tiles = [arr[r * th:(r + 1) * th, c * tw:(c + 1) * tw]
                      for r in range(ROWS) for c in range(ROWS)]
-            x = torch.stack([tf(cv2.cvtColor(t, cv2.COLOR_BGR2RGB)) for t in tiles])
+            x = torch.stack([tf(cv2.cvtColor(t, cv2.COLOR_BGR2RGB)) for t in tiles]).to(DEVICE)
             Xs.append(backbone(x).flatten(1))
             y = torch.zeros(ROWS * ROWS, len(classes))
             ci = classes.index(B.MC_NORM.get(m["label"], m["label"]))
@@ -54,8 +57,8 @@ def main():
             Ys.append(y)
             Cs.append(ci)
     X = torch.cat(Xs)
-    Y = torch.cat(Ys)
-    C = torch.tensor(Cs)
+    Y = torch.cat(Ys).to(DEVICE)
+    C = torch.tensor(Cs).to(DEVICE)
     Ct = C.repeat_interleave(ROWS * ROWS)
     print(f"tiles {X.shape[0]}, positives {int(Y.sum())}")
     for ep in range(400):

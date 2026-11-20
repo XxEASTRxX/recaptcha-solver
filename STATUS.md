@@ -799,3 +799,15 @@ windows, with no exceptions and no undecoded protocol errors. The multicaptcha/d
 not be fully tallied from the truncated output; the visible rounds included one multicaptcha failure
 (bicycle [0,5,6,9,10,11]) and dynamic passes/fails at the usual rate. This validates the shipped
 code after the prompt and guard changes; it is not a new measurement of the type rates.
+
+## 2026-11-21 - homeserver GPU fine-tune: 4x4 holdout 8/31 = 26% (VLM still better)
+
+SSH as root works (panoptes-node-1, RTX 3060 Ti, torch 2.14+cu130 in
+`/home/eas2007arda/brain_env`). The training bundle was copied and run there:
+- `train_head_only.py 4`: 101 grids, 1616 tiles, 469 positives, final loss 0.138, checkpoint saved.
+- `train_4x4_tiles.py`: 70 train / 31 holdout; train loss 0.008 (overfit); holdout exact **6/31 at
+  thr 0.4-0.5, 8/31 = 26% at thr 0.6**.
+The per-tile VLM is 43% live, so the 4x4 model still loses; the limit is the 101-grid label volume,
+not the compute. No 4x4 net ships (`HC_MC_NET_4X4` stays off). The scripts were also made
+GPU-aware and path-normalized (the Windows manifest backslashes broke `cv2.imread` on Linux).
+The 3x3 fine-tune is running.
