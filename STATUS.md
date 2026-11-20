@@ -728,3 +728,11 @@ The 20-gate loop was stopped after nine gates (10-18) once the 4x4 line was show
 Final md5-deduped exact GT: **101 4x4 grids** (32 motorcycle, 20 bicycle, 17 bus, 16 traffic light,
 10 hydrant, 6 car) and **545 3x3 grids**. The extra data does not change the frozen-probe conclusion
 (4/25 before the last gates); it is available for a future segmentation-grade model.
+
+## 2026-11-20 - 500-passing difficon corpus and patch4 net checked against the current subtype
+
+Research note for hCaptcha (kept here because the corpus lives in the hCaptcha repo): 500 passing
+singular-pattern rounds (family=difficon) with webm + click are available, and the patch4 net is
+strong on its own distribution. On the current static triangle-glyph scenes the pulse detector
+returns <2 clusters (declines), and patch4 on edge-density crops is 1/2 with zero or real change
+channels. No cross-repo action.
