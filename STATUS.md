@@ -776,3 +776,11 @@ per-icon odd-glyph judgments disagree across models on the low-contrast scene: l
 typesafe/jev-1.14 both pick a yellow icon where the colour rule says the dark icon is odd. Without an
 oracle the rule (design vs colour) is ambiguous, so offline cloud labeling is not a validated path
 for the pattern family. Cross-note only.
+
+## 2026-11-21 - multi-grid continuation REFUTED: the same grid is re-served
+
+Five live multicaptcha rounds submitted the per-tile VLM picks; every submission returned
+`["uvresp",null,null,null,0]`, and a payload refetch with the same `p` token returned the IDENTICAL
+image (md5 match) in all five. The session re-serves the same grid after a wrong answer; there is no
+pending next grid. A null is a wrong answer, exact matching stands, and the 33-43% rate is genuine
+recognition accuracy. The remaining multicaptcha gap is the 4x4 model (feature-limited).
