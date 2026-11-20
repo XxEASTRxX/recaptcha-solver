@@ -768,3 +768,11 @@ With the loop-selected v24 prompt restored and the retirement rule fixed (no 4-f
 reads sports 57/91 = 63% and total 63/100, versus 29-38% for the generic churned versions (v44-49)
 and 11% for the universal prompt. The loop's own win record selected the prompt in use. Cross-note
 only; code and memory in the hCaptcha repo.
+
+## 2026-11-21 - hCaptcha pattern GT rule unresolved (cross-note)
+
+The eval judge with images works for binary vision (sports cap true / overlap scene false) but the
+per-icon odd-glyph judgments disagree across models on the low-contrast scene: local rlow and cloud
+typesafe/jev-1.14 both pick a yellow icon where the colour rule says the dark icon is odd. Without an
+oracle the rule (design vs colour) is ambiguous, so offline cloud labeling is not a validated path
+for the pattern family. Cross-note only.
