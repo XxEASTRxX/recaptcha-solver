@@ -19,3 +19,4 @@ sheets/
 *.pth
 capture_*/
 gt_exact/
+probe*_vlm.json

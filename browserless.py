@@ -539,7 +539,8 @@ def solve_one(sess, net, cats, sitekey: str, v: str, template: bytes):
     # EXACT-GT tile net first when enabled. It is trained only on passing-round labels (exact by
     # the all-16 proof), so it carries no public-dataset bias. Falls through to the existing VLM
     # path when the checkpoint is missing or the label is unknown. HC_MC_NET=0 leaves it off.
-    if os.environ.get("HC_MC_NET") == "1" and label:
+    if (os.environ.get("HC_MC_NET") == "1" and label
+            and (rows == 3 or os.environ.get("HC_MC_NET_4X4") == "1")):
         try:
             picks = picks_by_tile_net(img, rows, cols, label)
         except Exception as exc:  # noqa: BLE001 - a missing checkpoint must not fail the round
