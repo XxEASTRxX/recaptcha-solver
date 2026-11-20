@@ -745,3 +745,12 @@ drag-TWO 100% in both. Combined with the pooled version history (v8 0/5 -> v31 8
 post-fix split (memory 97/156 = 62% vs universal 1/7), the learning loop's benefit is real in the
 pooled data but NOT demonstrated under control. Cross-note only; the corpus and solver live in the
 hCaptcha repo.
+
+## 2026-11-21 - hCaptcha drag-X fixed cross-note: 36-39% -> 94%
+
+The hCaptcha drag placement prompt asks for coordinates of the whole composite (scene + 90 px white
+strip); the model anchors on the object's own thumbnail, the y maps into the strip, the code rejects
+it, and 31% of "drag the X so it sits inside both shapes" rounds fell to a grid-cell guess. A
+generic re-ask stating the valid y range (`maxy = 1000*h/H`) fixed it: live gate drag-X **16/17 =
+94%** (baseline 36-39%), traces `vlm_first` 16 / `grid_cell` 1. Cross-note only; solver in the
+hCaptcha repo.
