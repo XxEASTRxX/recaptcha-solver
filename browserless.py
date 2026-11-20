@@ -198,10 +198,13 @@ def submit(sess, sitekey: str, v: str, meta: dict, indices: list[int]):
     except Exception:
         return None, f"parse: {text[:80]}"
     token = d[1] if isinstance(d, list) and len(d) > 1 else None
-    if token is None and os.environ.get("HC_DEBUG_SUBMIT") == "1":
+    if os.environ.get("HC_DEBUG_SUBMIT") == "1":
         # Evidence capture: a multicaptcha serves SUCCESSIVE grids, so a correct first answer also
         # returns no token. Without the raw body we cannot tell "wrong answer" from "next grid".
-        print(f"[userverify] type={meta.get('type')} len={len(text)} body={text[:600]}", flush=True)
+        # Print PASSING bodies too: the shape of d[2:] is what distinguishes a token from a
+        # continuation, and we had never recorded a passing multicaptcha body.
+        print(f"[userverify] type={meta.get('type')} ok={bool(token)} len={len(text)} "
+              f"body={text[:600]}", flush=True)
     return token, text[:160]
 
 
@@ -259,10 +262,22 @@ def picks_per_tile_vlm(png: bytes, rows: int, cols: int, label: str) -> list[int
     # A 4x4 `multicaptcha` is ONE photo split into 16 tiles, so most tiles hold only a FRAGMENT of
     # the object. Without saying so, the VLM answers "no" to every tile (measured: `no picks
     # (label=bus)` on a 4x4 grid), which reads as a solver failure when it is a prompt failure.
-    prompt = (f'This is ONE tile cut from a larger photo in a reCAPTCHA grid. Task: "Select all '
-              f'squares with {label}". The object is often cut off by the tile edge - answer yes if '
-              f'ANY part of a {label} is visible in this tile, even partially. '
-              'Reply STRICT JSON only: {"yes": true} or {"yes": false}')
+    # 4x4 REFINEMENT (measured 2026-11-19 on two fresh live grids): the old prompt answered yes to
+    # an empty sky tile ("car") and to a painted "BUS" road marking ("bus"). Adding the exclusion
+    # clause fixed both - bus [4,5,8,9,10] exact (was [4,5,8,9,10,12,14]) and car [5,6,7,9,10]
+    # (was [2,4,5,6,7]; 2 was sky, 8 a real car still missed). The detector union added nothing on
+    # either grid, so the prompt is the whole defect. HC_MC_PROMPT=0 restores the old wording.
+    if rows == 4 and os.environ.get("HC_MC_PROMPT", "1") == "1":
+        prompt = (f'This is ONE tile cut from a larger photo in a reCAPTCHA 4x4 grid. Task: "Select '
+                  f'all squares with {label}". Answer yes only if a {label} itself is visible in this '
+                  f'tile, even partially cut off by the edge. Answer no if the tile shows only sky, '
+                  f'road surface, trees, buildings, people, or a painted word/sign that is not the '
+                  'object. Reply STRICT JSON only: {"yes": true/false, "what": "brief"}')
+    else:
+        prompt = (f'This is ONE tile cut from a larger photo in a reCAPTCHA grid. Task: "Select all '
+                  f'squares with {label}". The object is often cut off by the tile edge - answer yes if '
+                  f'ANY part of a {label} is visible in this tile, even partially. '
+                  'Reply STRICT JSON only: {"yes": true} or {"yes": false}')
     brain = httpx.Client(timeout=90.0)
     out = []
     try:
@@ -513,6 +528,12 @@ def solve_one(sess, net, cats, sitekey: str, v: str, template: bytes):
             picks = sorted(set(picks) | _ov)
         except Exception:
             pass
+    # ACCEPTANCE-RULE PROBE (2026-11-19): a 4x4 hydrant round passed with 12 of 16 tiles picked
+    # where only 3 tiles visibly contain the hydrant. That is only possible if the server accepts a
+    # SUPERSET of the true set (under-selection fails, over-selection is tolerated). HC_MC_ALL=1
+    # submits every tile to test that directly; it is a probe, never a serving default.
+    if rows == 4 and want is not None and os.environ.get("HC_MC_ALL") == "1":
+        picks = list(range(rows * cols))
     if not picks and want is not None:
         arr, dets = detect(net, cats, img)
         picks = sorted(set(picks_per_tile(net, cats, arr, want, rows, cols))
