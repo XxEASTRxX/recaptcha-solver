@@ -694,3 +694,30 @@ An 8-epoch full fine-tune on the 52 exact grids (36 train / 16 holdout) reached 
 backbone overfits. The frozen-head checkpoint was restored (`train_head_only.py 4`). Conclusion: a 4x4
 model needs substantially more exact labels (or a stronger backbone), not more fitting. The live 4x4
 path stays on the VLM (43%), and HC_MC_NET remains 3x3-only.
+
+## 2026-11-20 - per-class routing: the DEFAULT path is already optimal
+
+80 exact 3x3 holdout grids, exact-match per class:
+
+| class | 57k classifier | exact-GT 3x3 net | per-tile VLM |
+|---|---|---|---|
+| bicycle (16) | **16/16** | 15/16 | 11/16 |
+| bus (22) | 15/22 | 17/22 | **22/22** |
+| fire hydrant (20) | **20/20** | 18/20 | 19/20 |
+| pedestrian crossing (20) | 18/20 | 19/20 | **20/20** |
+| car (2) | **2/2** | 1/2 | 1/2 |
+
+The live default already routes bus/Pedestrian crossing to the VLM and bicycle/hydrant/car to the 57k
+classifier - i.e. the best of the three for every class. HC_MC_NET is therefore NOT a serving gain
+(and replaces the better per-class choice with the net); it stays 3x3-only and off by default. The
+live dynamic gap (85-86% vs 90%) is single-scene noise, not a routing defect: the six failures read
+as a close-up bus side missed, and a bridge road counted as a pedestrian crossing.
+
+## 2026-11-20 - 4x4 dataset grew to 86 exact grids; frozen probe 4/25 - NOT data-limited
+
+Twenty harvest gates (partial run) grew the exact set to 86 4x4 grids (26 motorcycle, 16 bicycle, 15
+traffic light, 15 bus, 10 hydrant, 4 car; md5-deduped) and 448 3x3 grids. The frozen-feature probe on
+the 86 grids (61 train / 25 holdout) reads **4/25 = 16% exact** (4/25 at thr 0.4, 3/25 at 0.5) - no
+better than the 52-grid run (4/15). The limit is the FEATURES, not the data volume: the 4x4 task
+needs a segmentation-grade model (or a per-tile verifier that understands partials), which the local
+backbone cannot provide. The live 4x4 path stays on the VLM (43%); no 4x4 net ships.
