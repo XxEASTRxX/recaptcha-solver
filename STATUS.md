@@ -562,3 +562,64 @@ returned `[1,2,3,5,6,7,9,10,11]`, no 13). So `HC_MC_VLM_ONLY=1` was added to ski
 | VLM-only | 22/40 = 55% | 5/16 = 31% |
 
 **Worse.** The union earns its place; the flag stays default-off. Recorded, not shipped.
+
+## 2026-11-19 - multicaptcha: refined 4x4 prompt 6/14 = 43%; acceptance rule under test
+
+The union-confidence premise was re-checked against the agent labels and is mostly WRONG. Rendering
+`labels_agent.json`'s "detector-added false positives" showed the bus grid's tiles 5/6 and the
+motorcycle grid's tile 9 DO contain the object; the labels were incomplete. A VLM yes/no confirmed
+6 of the 7 "FP" tiles. Do not build a confidence gate on that sample.
+
+**Shipped**: the 4x4 per-tile prompt now excludes sky/road/trees/buildings/people/painted signs
+(`HC_MC_PROMPT=0` restores the old wording). On two fresh grids it fixed the visible defects: bus
+[4,5,8,9,10] exact (was [4,5,8,9,10,12,14], incl. a painted "BUS" marking), car [5,6,7,9,10] (was
+[2,4,5,6,7], incl. empty sky). The detector union added nothing on either grid.
+
+| 60-round gate | result |
+|---|---|
+| dynamic | 39/46 = 85% |
+| multicaptcha | **6/14 = 43%** (was 5/14 = 36%) |
+| total | **45/60 = 75%** |
+
+Multicaptcha failures are single-tile selection errors (motorcycle adds a white car; bicycle adds a
+wall; bus [4,5] under-selects the wheels in 8/9). The 57k classifier is exact on one bicycle grid but
+returns NO motorcycle on a motorcycle grid, so it cannot replace the VLM.
+
+**Acceptance rule is unclear**: a hydrant round PASSED with 12 of 16 tiles selected where only 3 tiles
+visibly contain the hydrant. That is only possible if the server tolerates a SUPERSET. `HC_MC_ALL=1`
+(probe flag) submits all 16 tiles on 4x4 rounds to test this directly; a 60-round probe is running.
+A f-string bug in the new prompt crashed 4 rounds of an earlier gate (fixed; JSON braces moved out of
+the f-string).
+
+## 2026-11-19 - multicaptcha: three more selection framings REFUTED; exact GT harvested
+
+Acceptance is exact: `HC_MC_ALL=1` (all 16 tiles) failed **0/18** multicaptcha rounds. Over-selection
+is fatal, so every fix must be near-exact per tile. The 12/16 hydrant pass is an unexplained outlier.
+
+| framing | result on 6 hand-checked grids |
+|---|---|
+| reference-anchored comparison (known example + tile, "same kind?") | under-selects partials: motorcycle [1,6,10] vs [1,2,5,6,9,10]; bus [4,5] vs [4,5,8,9]; 0/6 exact |
+| 2x2 quadrant classifier (4 calls, "which sub-tiles?") | over-selects: bus 9 tiles, bicycle 15 tiles; 1/6 exact |
+| 3-pass per-tile majority vote | unanimous but wrong on 4/6 (model is consistently wrong, not noisy) |
+
+Whole-photo detector sweep (6 hand-checked grids): mf=0.04 gives tp=32 fp=8 fn=1, 3/6 exact; no
+single coverage threshold separates the bus's true partial wheels (0.06-0.10) from the motorcycle's
+false edge tiles (0.16-0.23). The detector is exact on 2/6 at mf=0.15.
+
+Exact GT harvest (`gt_harvest.py`): **13 4x4 grids** (7 passing + 6 hand-verified) and **97 3x3
+dynamic grids** (exact because acceptance is exact). 13 grids are too few to train a 4x4 tile
+classifier; more passing multicaptcha rounds are needed. The 3x3 set is large enough for a 3x3 model,
+but the earlier in-domain transfer measured 34% live, so transfer to 4x4 is not assumed.
+
+## 2026-11-19 - reference-anchored / 2x2 / majority REFUTED; exact GT = 13 4x4 + 97 3x3
+
+All three remaining selection framings failed on 6 hand-checked grids: reference-anchored comparison
+under-selects partials (0/6 exact), 2x2 quadrant classification over-selects (1/6), and 3-pass
+per-tile majority is unanimous but wrong on 4/6. The whole-photo detector at mf=0.04 reaches 3/6
+exact but no coverage threshold separates the bus's true partial wheels (0.06-0.10) from the
+motorcycle's false edge tiles (0.16-0.23).
+
+`gt_harvest.py` produced **13 exact 4x4 grids** (7 passing + 6 hand-verified) and **97 exact 3x3
+dynamic grids**. 13 grids cannot train a 4x4 tile classifier; the 3x3 set can train a 3x3 model, but
+the earlier in-domain transfer measured 34% live, so transfer to 4x4 is not assumed. Multicaptcha
+stays at 6/14 = 43%, blocked on exact labels.

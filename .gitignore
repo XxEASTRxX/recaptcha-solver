@@ -17,3 +17,5 @@ sheets/
 *.npz
 *.npy
 *.pth
+capture_*/
+gt_exact/
