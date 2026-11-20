@@ -790,3 +790,12 @@ recognition accuracy. The remaining multicaptcha gap is the 4x4 model (feature-l
 A payload-refetch probe on six live `dynamic` rounds returned tokens on the first submission every
 time (6/6, no nulls). Dynamic, like multicaptcha, is one grid per challenge; the 86% live rate is
 recognition accuracy, not a continuation limit. Both protocol hypotheses are now closed.
+
+## 2026-11-21 - shipped default path re-validated: 13/20 = 65%, no errors
+
+A 20-round run of the current default `browserless.py` (refined 4x4 prompt + the 3x3-only
+HC_MC_NET guard; net off) read **13/20 = 65%** - within the known 68-75% window band for small
+windows, with no exceptions and no undecoded protocol errors. The multicaptcha/dynamic split could
+not be fully tallied from the truncated output; the visible rounds included one multicaptcha failure
+(bicycle [0,5,6,9,10,11]) and dynamic passes/fails at the usual rate. This validates the shipped
+code after the prompt and guard changes; it is not a new measurement of the type rates.
