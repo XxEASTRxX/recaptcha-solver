@@ -574,7 +574,12 @@ def solve_one(sess, net, cats, sitekey: str, v: str, template: bytes):
         # HC_VLM_ALL=1 routes EVERY label through the per-tile VLM. The old narrow
         # VLM_TILE_LABELS set was chosen against the weak coder model; with a dedicated VL model
         # that routing rule is probably obsolete and must be re-measured rather than inherited.
-        _all = os.environ.get("HC_VLM_ALL") == "1"
+        # 3x3 all-VLM routing was A/B'd and REFUTED (2026-11-21): the 40-round arm read dynamic
+        # 21/23 = 91% but the 60-round confirmation read 35/45 = 78%, i.e. combined 56/68 = 82%
+        # against the shipped routing's 47/58 = 81% - no gain, at 3x the latency (median 3.5 s vs
+        # 1.2 s). HC_VLM_ALL_3X3 stays OFF; HC_VLM_ALL=1 remains the explicit override.
+        _all = (os.environ.get("HC_VLM_ALL") == "1"
+                or (rows == 3 and os.environ.get("HC_VLM_ALL_3X3", "0") == "1"))
         picks = (
             picks_per_tile_vlm(img, rows, cols, label)
             if (_all or VLM_TILE_LABELS is None or label in VLM_TILE_LABELS) else [])

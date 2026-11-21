@@ -916,3 +916,32 @@ PASSING dumps (a pass is exact GT because acceptance is exact) added **57 exact 
 `gt_exact/` is gitignored (captured data), so this is a local corpus gain only - it does not ship.
 The 4x4 set is still far below what a trained 4x4 classifier needs; the harvest must continue
 whenever multicaptcha is served.
+
+## 2026-11-21 - dynamic failures concentrate on the FAST classifier path; all-VLM A/B running
+
+Of the 10 dynamic failures in the 80-round sample, 8 are ~1 s rounds - i.e. the 57k-classifier path
+(hydrant x3, Bike x2, car x3) - while the VLM-routed classes (Pedestrian 3.4 s, bus 3.3 s) failed
+once and once. The notes' per-class routing was chosen on the biased 80-grid passing holdout (where
+the classifier was 16/16 bicycle, 20/20 hydrant); live, the classifier is the weak link. A/B running:
+`HC_VLM_ALL=1` routes bicycle/hydrant/car through the per-tile VLM too (`rc_gate_vlmall40.log`).
+
+## 2026-11-21 - 3x3 ALL-VLM routing SHIPPED: dynamic 91% vs 81%
+
+A/B on the shipped path: `HC_VLM_ALL=1` (every class through the per-tile VLM) on 40 rounds
+(`rc_gate_vlmall40.log`): dynamic **21/23 = 91%**, multicaptcha 4/17 = 24%, median 3.5 s. The shipped
+per-class routing over the 80-round sample was dynamic 47/58 = 81%, multicaptcha 10/22 = 45%. So the
+VLM wins for 3x3 (where 8 of 10 failures were the ~1 s classifier rounds) and LOSES for 4x4 (the
+classifier's 45% beats the VLM's 24% there). Shipped: `HC_VLM_ALL_3X3` defaults ON - every 3x3 class
+routes through the VLM; 4x4 keeps the per-class routing. Confirmation gate `rc_gate_3x3vlm60.log`
+running (60 rounds).
+
+## 2026-11-21 - CORRECTION: 3x3 all-VLM routing REFUTED by its own confirmation gate
+
+The 40-round `HC_VLM_ALL=1` arm read dynamic 21/23 = 91%, but the 60-round confirmation with the
+3x3-only flag (`rc_gate_3x3vlm60.log`) read dynamic **35/45 = 78%**, multicaptcha 4/15 = 27%.
+Combined 3x3 all-VLM: **56/68 = 82%** vs the shipped per-class routing's **47/58 = 81%** - no gain,
+and the VLM path triples the median round (3.5 s vs 1.2 s). The earlier 91% entry is SUPERSEDED;
+`HC_VLM_ALL_3X3` defaults OFF (explicit `HC_VLM_ALL=1` remains the override).
+
+Lesson recorded twice today: 20-40 round reCAPTCHA windows swing 15-25 points; only >=60-round
+samples should be cited for these rates.
