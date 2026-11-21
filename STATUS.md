@@ -848,3 +848,35 @@ visible, even a small fragment" wording: **exact 0/101 = 0%**; tile tp=161 fp=23
 40%, recall 34%). The VLM over-selects with the partial rule (e.g. the bus grid got all 16 tiles).
 The per-tile path (54.5% per-tile, the 43% grid-level) remains the best multicaptcha method; the
 whole-grid prompt is NOT the route. Do not retry the whole-grid partial-tile wording.
+
+## 2026-11-21 - mask segmentation and padded tiles REFUTED for 4x4 multicaptcha
+
+**Mask R-CNN (COCO instance masks) instead of boxes** - `probe_maskrcnn_4x4.py`, 101 exact 4x4
+grids, mask score 0.3-0.7, pixels-per-tile threshold swept 0-50: best **30/101 = 30% exact** at
+(score 0.3, 50 px), tile precision 0.83 / recall 0.74. Box->tile sweeps failed because a diagonal
+object's BOX over-covers; the MASK fixes that in principle, but at 450x450 the masks under-cover the
+small partials. Below the per-tile VLM's 43%, so no mask path ships.
+
+**Padded per-tile VLM** - each tile fed with a 22% margin of the surrounding photo and the tile
+boundary drawn (`probe_padded_tiles.py`): **1/6 grids** on the first six exact grids (the model
+under-selects more than with the tight crop: bicycle gt 5 tiles -> 2 picked). Sample is small but the
+direction is wrong; the shipped tight-tile 4x4 prompt stays.
+
+**Whole-grid mask overlay** - `probe_maskoverlay_4x4.py` is ready (grid + numbered tiles + translucent
+mask + photo) but not measured; the mask's 83% tile precision caps it below the VLM unless the model
+corrects the hint, which the padded-tile result makes unlikely.
+
+Multicaptcha remains **43%** (per-tile VLM). The 4x4 path has now refuted: box detector, mask
+detector, padded tiles, whole-grid partial wording, SAM, GrabCut, 3x3 transfer, 4x4 GPU fine-tune,
+frozen features, neighbour context. It is blocked on a segmentation-grade recognizer, not on a
+selection heuristic.
+
+## 2026-11-21 - whole-grid mask overlay REFUTED: 1/20 = 5%
+
+`probe_maskoverlay_4x4.py` (Mask R-CNN masks drawn translucently + numbered 4x4 grid + the photo,
+one VLM call per grid) on the first 20 exact 4x4 grids: **1/20 exact**. The model copies and
+inflates the mask hint (e.g. bus gt [5,6,9,10] -> pred 10 tiles; motorcycle gt [5,8,9,10] -> pred 8),
+so a 83%-precision hint makes the answer worse than the per-tile VLM (43%). The 4x4 path is now out
+of local ideas: box detector, mask detector, padded tiles, mask overlay, whole-grid partial wording,
+SAM, GrabCut, 3x3 transfer, 4x4 fine-tune, frozen features and neighbour context are all measured
+below the shipped per-tile VLM.
