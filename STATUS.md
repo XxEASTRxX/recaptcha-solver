@@ -880,3 +880,30 @@ so a 83%-precision hint makes the answer worse than the per-tile VLM (43%). The 
 of local ideas: box detector, mask detector, padded tiles, mask overlay, whole-grid partial wording,
 SAM, GrabCut, 3x3 transfer, 4x4 fine-tune, frozen features and neighbour context are all measured
 below the shipped per-tile VLM.
+
+## 2026-11-21 - FRESH GATE: 18/20 = 90% token rate (dynamic 93%, multicaptcha 83%)
+
+`browserless.py --rounds 20` on the SHIPPED path (no env overrides), `rc_gate20.log`, dumps in
+`rc_dump_live/`:
+- total **18/20 = 90%** tokens
+- dynamic **13/14 = 93%**
+- multicaptcha **5/6 = 83%**
+- median round **1.2 s**, max 7.3 s (the fast rounds are the 57k-classifier path; the VLM rounds are
+  the 3-7 s ones).
+
+This window MEETS all three goal targets (token >=80%, dynamic >=90%, multicaptcha >=80%), but the
+per-type samples are small (14 / 6) and the historical band is 68-75% total, so a larger
+confirmation gate is running (`rc_gate60.log`, 60 rounds). The two failures were a hydrant dynamic
+(extra tile) and a bus multicaptcha (`["uvresp",null,null,null,0]`).
+
+## 2026-11-21 - CORRECTION: 60-round gate reads 65%; the 20-round 90% was a lucky window
+
+`browserless.py --rounds 60` immediately after the 20-round run (`rc_gate60.log`, dumps in
+`rc_dump_live2/`): **39/60 = 65%** tokens - dynamic **34/44 = 77%**, multicaptcha **5/16 = 31%**,
+median round 3.3 s. Combined with the 20-round run: **57/80 = 71%**, dynamic **47/58 = 81%**,
+multicaptcha **10/22 = 45%** - i.e. the shipped path is exactly in its historical 68-75% band, and
+the earlier "18/20 = 90%, all targets met" entry is SUPERSEDED. Do not cite the 20-round window as
+evidence of a gain; it was sampling noise (14 dynamic / 6 multicaptcha).
+
+The reCAPTCHA targets (>=80% token, >=90% dynamic, >=80% multicaptcha) remain unmet at the true
+rates 71% / 81% / 45%.
