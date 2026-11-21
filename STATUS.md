@@ -945,3 +945,11 @@ and the VLM path triples the median round (3.5 s vs 1.2 s). The earlier 91% entr
 
 Lesson recorded twice today: 20-40 round reCAPTCHA windows swing 15-25 points; only >=60-round
 samples should be cited for these rates.
+
+## 2026-11-21 - multicaptcha per-class breakdown (80-round sample)
+
+From `rc_gate20` + `rc_gate60` (shipped routing): motorcycle **4/9 = 44%**, bicycle **5/6 = 83%**,
+fire hydrant 1/2, bus 0/2, traffic light 0/2, car 0/1. The 4x4 classes routed to the per-tile VLM
+(bus, traffic light) are 0/4 in this window while the classifier-routed bicycle is 5/6 - the mirror
+image of the 3x3 pattern, but every cell except motorcycle/bicycle is n<=2, so no routing change is
+justified from this sample. It does say the 4x4 weakness is not confined to one recognizer.
