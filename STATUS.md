@@ -907,3 +907,12 @@ evidence of a gain; it was sampling noise (14 dynamic / 6 multicaptcha).
 
 The reCAPTCHA targets (>=80% token, >=90% dynamic, >=80% multicaptcha) remain unmet at the true
 rates 71% / 81% / 45%.
+
+## 2026-11-21 - fresh dump harvest: local exact GT grew to 703 grids
+
+The two gates above dumped every challenge (`rc_dump_live/` 20, `rc_dump_live2/` 60). Harvesting the
+PASSING dumps (a pass is exact GT because acceptance is exact) added **57 exact grids** to the local
+`gt_exact/manifest.json`: 3x3 545 -> **592**, 4x4 101 -> **111** (md5-deduped, `source="dump"`).
+`gt_exact/` is gitignored (captured data), so this is a local corpus gain only - it does not ship.
+The 4x4 set is still far below what a trained 4x4 classifier needs; the harvest must continue
+whenever multicaptcha is served.
